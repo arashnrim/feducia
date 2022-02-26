@@ -35,7 +35,7 @@ app.get("/getBalance/dsgd", async (req, res) => {
   res.end(JSON.stringify({ balance: balance }));
 });
 
-app.get("/getTransactions", async (req, res) => {
+app.post("/getTransactions", async (req, res) => {
   const userAddress = req.body.userAddress;
   if (userAddress === undefined) {
     res.sendStatus(400).end();
