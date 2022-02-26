@@ -1,3 +1,4 @@
+import { ArrowCircleDown, ArrowCircleUp } from "phosphor-react";
 import Layout from "../components/Layout";
 
 const Home = () => {
@@ -9,11 +10,13 @@ const Home = () => {
 
   return (
     <Layout>
-      <main className="grid grid-cols-5 p-10 pt-40 gap-y-10 gap-x-20 min-h-screen h-fit">
-        <section className="col-span-3 p-10 space-y-5 bg-white shadow-lg h-[50vh] rounded-xl">
+      <main className="grid min-h-screen grid-cols-3 gap-10 p-10 pt-40 h-fit">
+        <section className="col-span-2 p-10 space-y-5 bg-white shadow-lg h-[50vh] rounded-xl">
           <h1 className="text-3xl font-bold">Total Asset Balance</h1>
+          {/* TODO: Implement charting ability */}
         </section>
-        <section className="col-span-2 p-10 space-y-5 bg-white shadow-lg rounded-xl">
+
+        <section className="row-span-2 p-10 space-y-5 bg-white shadow-lg rounded-xl">
           <h1 className="text-3xl font-bold">Transfer money</h1>
           <div className="flex flex-row space-x-2">
             <input
@@ -35,20 +38,27 @@ const Home = () => {
           </button>
         </section>
 
-        <section className="col-span-3 p-10 space-y-5 bg-white shadow-lg h-fit rounded-xl">
+        <section className="col-span-2 p-10 space-y-5 bg-white shadow-lg h-fit rounded-xl">
           <h1 className="text-3xl font-bold">Recent Transactions</h1>
-          <div className="p-5 divide-y-2 divide-gray-200">
+          <div className="divide-y-2 divide-gray-200">
             {recentTransactions.map((transaction) => (
-              <p
-                className="py-2 text-gray-400 font-xl"
+              <div
                 key={transaction.amount}
+                className="flex items-center py-2 space-x-2 text-xl"
               >
-                <span className="font-bold text-black">
-                  {transaction.amount}
-                </span>{" "}
-                {transaction.type === "receive" ? "from" : "to"}{" "}
-                {transaction.person}
-              </p>
+                {transaction.type === "receive" ? (
+                  <ArrowCircleDown className="text-green-500" />
+                ) : (
+                  <ArrowCircleUp className="text-red-500" />
+                )}
+                <p className="text-gray-400">
+                  <span className="font-bold text-black">
+                    {transaction.amount}
+                  </span>{" "}
+                  {transaction.type === "receive" ? "from" : "to"}{" "}
+                  {transaction.person}
+                </p>
+              </div>
             ))}
           </div>
         </section>

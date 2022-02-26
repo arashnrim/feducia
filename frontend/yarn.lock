@@ -3083,6 +3083,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"phosphor-react@npm:^1.4.0":
+  version: 1.4.0
+  resolution: "phosphor-react@npm:1.4.0"
+  peerDependencies:
+    react: ">=16"
+  checksum: 10fbd32a2e5b51259a251059d5afcf6781af95e92ed0e6ce522ecac5c531e3c6b5d38eb1f7b5450725a14d8e4043a4080a99ebdb58bba7041e5c7333a59457a9
+  languageName: node
+  linkType: hard
+
 "picocolors@npm:^1.0.0":
   version: 1.0.0
   resolution: "picocolors@npm:1.0.0"
@@ -4096,6 +4105,7 @@ __metadata:
     husky: ^7.0.4
     lint-staged: ^12.3.4
     next: 12.1.0
+    phosphor-react: ^1.4.0
     postcss: ^8.4.7
     prettier: ^2.5.1
     react: 17.0.2
