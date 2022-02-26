@@ -1,15 +1,31 @@
 import { supabase } from "../utils/supabaseClient";
 import { useState } from "react";
+import { Router } from "next/router";
 
 const Home = () => {
   const signIn = async (email, password) => {
-    const { user, error } = await supabase.auth.signIn({
+    const { error } = await supabase.auth.signIn({
       email: email,
       password: password,
     });
 
-    if (error !== undefined) {
+    if (error) {
       alert(error.error_description || error.message);
+    } else {
+      Router.push("/home");
+    }
+  };
+
+  const signUp = async (email, password) => {
+    const { error } = await supabase.auth.signUp({
+      email: email,
+      password: password,
+    });
+
+    if (error) {
+      alert(error.error_description || error.message);
+    } else {
+      Router.push("/home");
     }
   };
 
@@ -43,6 +59,12 @@ const Home = () => {
             onClick={() => signIn(username, password)}
           >
             Confirm
+          </button>
+          <button
+            className="bg-[#216de2] h-12 w-full rounded-lg hover:bg-[#1850a5] text-white font-bold"
+            onClick={() => signUp(username, password)}
+          >
+            Create account
           </button>
         </div>
       </section>
