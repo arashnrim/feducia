@@ -1,13 +1,7 @@
 import { ArrowCircleDown, ArrowCircleUp } from "phosphor-react";
 import Layout from "../components/Layout";
 
-const Home = () => {
-  const recentTransactions = [
-    { amount: "SGD 1234.00", type: "receive", person: "XYZ" },
-    { amount: "SGD 96.24", type: "send", person: "Someone" },
-    { amount: "SGD 65.50", type: "send", person: "ABC" },
-  ];
-
+const Home = ({ recentTransactions }) => {
   return (
     <Layout>
       <main className="grid min-h-screen grid-cols-3 gap-10 p-10 pt-40 h-fit">
@@ -16,8 +10,8 @@ const Home = () => {
           {/* TODO: Implement charting ability */}
         </section>
 
-        <section className="row-span-2 p-10 space-y-5 bg-white shadow-lg rounded-xl">
-          <h1 className="text-3xl font-bold">Transfer money</h1>
+        <section className="row-span-2 p-10 space-y-5 bg-white shadow-lg rounded-xl place-content-center">
+          <h1 className="text-3xl font-bold ">Transfer money</h1>
           <div className="flex flex-row space-x-2">
             <input
               className="w-full h-12 px-5 border border-gray-300 rounded-lg"
@@ -46,17 +40,16 @@ const Home = () => {
                 key={transaction.amount}
                 className="flex items-center py-2 space-x-2 text-xl"
               >
-                {transaction.type === "receive" ? (
+                {transaction.type === "received" ? (
                   <ArrowCircleDown className="text-green-500" />
                 ) : (
                   <ArrowCircleUp className="text-red-500" />
                 )}
                 <p className="text-gray-400">
                   <span className="font-bold text-black">
-                    {transaction.amount}
+                    {transaction.currency} {transaction.amount}
                   </span>{" "}
-                  {transaction.type === "receive" ? "from" : "to"}{" "}
-                  {transaction.person}
+                  {transaction.flow}
                 </p>
               </div>
             ))}
@@ -66,5 +59,31 @@ const Home = () => {
     </Layout>
   );
 };
+
+export async function getStaticProps(context) {
+  const apiURL = process.env.API_URL;
+  let recentTransactions = [];
+
+  await fetch(apiURL + "/getTransactions", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    // TODO: Add custom user address
+    body: JSON.stringify({
+      userAddress: "0xd3999C07e2c09BDecC7c245E68cDF5a726c88863",
+    }),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      recentTransactions = recentTransactions.concat(data.transactions);
+    });
+
+  return {
+    props: {
+      recentTransactions,
+    },
+  };
+}
 
 export default Home;
