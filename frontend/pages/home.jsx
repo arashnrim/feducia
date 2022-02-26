@@ -1,13 +1,37 @@
+import { Doughnut } from "react-chartjs-2";
+import { Chart, ArcElement, Filler, Legend, Tooltip } from "chart.js";
 import { ArrowCircleDown, ArrowCircleUp } from "phosphor-react";
+import { useState } from "react";
+
 import Layout from "../components/Layout";
 
-const Home = ({ recentTransactions }) => {
+Chart.register(ArcElement, Filler, Legend, Tooltip);
+
+  const labels = [];
+  const amounts = [];
+  for (const currency of totalAssetBalance) {
+    labels.push(currency.currency);
+    amounts.push(currency.amount);
+  }
+
   return (
     <Layout>
       <main className="grid min-h-screen grid-cols-3 gap-10 p-10 pt-40 h-fit">
-        <section className="col-span-2 p-10 space-y-5 bg-white shadow-lg h-[50vh] rounded-xl">
+        <section className="col-span-2 p-10 space-y-5 bg-white shadow-lg rounded-xl">
           <h1 className="text-3xl font-bold">Total Asset Balance</h1>
-          {/* TODO: Implement charting ability */}
+          <Doughnut
+            className="w-full max-h-96"
+            data={{
+              labels: labels,
+              datasets: [
+                {
+                  label: "",
+                  data: amounts,
+                  backgroundColor: ["#216de2", "#1850a5"],
+                },
+              ],
+            }}
+          />
         </section>
 
         <section className="row-span-2 p-10 space-y-5 bg-white shadow-lg rounded-xl place-content-center">
@@ -79,9 +103,40 @@ export async function getStaticProps(context) {
       recentTransactions = recentTransactions.concat(data.transactions);
     });
 
+  await fetch(apiURL + "/getBalance/drmb", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    // TODO: Add custom user address
+    body: JSON.stringify({
+      userAddress: "0xd3999C07e2c09BDecC7c245E68cDF5a726c88863",
+    }),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      totalAssetBalance.push({ amount: data.balance, currency: "RMB" });
+    });
+
+  await fetch(apiURL + "/getBalance/dsgd", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    // TODO: Add custom user address
+    body: JSON.stringify({
+      userAddress: "0xd3999C07e2c09BDecC7c245E68cDF5a726c88863",
+    }),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      totalAssetBalance.push({ amount: data.balance, currency: "SGD" });
+    });
+
   return {
     props: {
       recentTransactions,
+      totalAssetBalance,
     },
   };
 }
