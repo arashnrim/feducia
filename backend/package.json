@@ -1,5 +1,9 @@
 {
+  "scripts": {
+    "start": "node app.js"
+  },
   "dependencies": {
+    "abi-decoder": "^2.4.0",
     "express": "^4.17.3",
     "web3": "^1.7.0"
   }

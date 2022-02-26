@@ -4,6 +4,8 @@ const port = 5000
 const { calcDRMBPrice, calcDSGDPrice } = require("./priceRetrieval")
 const { getBalance } = require("./getBalance")
 
+app.get("/", (req, res) => { res.sendStatus(200) })
+
 app.get("/retrievePrice/drmb", async (req, res) => {
     let DRMBPrice = await calcDRMBPrice()
     res.setHeader("Content-Type", "application/json")
