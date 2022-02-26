@@ -218,18 +218,6 @@ function retrieveAmountFromInputData(data) {
   return decodedData.params[1].value / 1000000000000000000;
 }
 
-function retrieveTypeFromInputData(data) {
-  const decodedData = abiDecoder.decodeMethod(data);
-  return decodedData.name;
-}
-
 module.exports = {
   retrieveAmountFromInputData,
-  retrieveTypeFromInputData,
 };
-
-let data =
-  "0xa9059cbb0000000000000000000000004b478900642692e1e1ce83afba42d3fd68d5844c000000000000000000000000000000000000000000000001158e460913d00000";
-const decodedData = abiDecoder.decodeMethod(data);
-
-console.log(decodedData.name);
