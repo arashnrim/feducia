@@ -36,12 +36,12 @@ app.get("/getBalance/dsgd", async (req, res) => {
 });
 
 app.post("/getTransactions", async (req, res) => {
-  console.debug(req.body);
   const userAddress = req.body.userAddress;
   if (userAddress === undefined) {
     res.sendStatus(400).end();
   }
   let transactionData = await getTransactions(userAddress);
+  res.setHeader("Content-Type", "application/json");
   res.end(JSON.stringify({ transactions: transactionData }));
 });
 
