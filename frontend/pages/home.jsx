@@ -1,6 +1,12 @@
 import { Doughnut } from "react-chartjs-2";
 import { Chart, ArcElement, Filler, Legend, Tooltip } from "chart.js";
-import { ArrowCircleDown, ArrowCircleUp } from "phosphor-react";
+import {
+  ArrowCircleDown,
+  ArrowCircleUp,
+  ChartPie,
+  Receipt,
+  PaperPlaneTilt,
+} from "phosphor-react";
 import { useState } from "react";
 
 import Layout from "../components/Layout";
@@ -18,7 +24,10 @@ Chart.register(ArcElement, Filler, Legend, Tooltip);
     <Layout>
       <main className="grid min-h-screen grid-cols-3 gap-10 p-10 pt-40 h-fit">
         <section className="col-span-2 p-10 space-y-5 bg-white shadow-lg rounded-xl">
-          <h1 className="text-3xl font-bold">Total Asset Balance</h1>
+          <span className="flex flex-row items-center space-x-2">
+            <ChartPie className="text-3xl" weight="bold" />
+            <h1 className="text-3xl font-bold">Total Asset Balance</h1>
+          </span>
           <Doughnut
             className="w-full max-h-96"
             data={{
@@ -35,7 +44,10 @@ Chart.register(ArcElement, Filler, Legend, Tooltip);
         </section>
 
         <section className="row-span-2 p-10 space-y-5 bg-white shadow-lg rounded-xl place-content-center">
-          <h1 className="text-3xl font-bold ">Transfer money</h1>
+          <span className="flex flex-row items-center space-x-2">
+            <PaperPlaneTilt className="text-3xl" weight="bold" />
+            <h1 className="text-3xl font-bold ">Transfer Money</h1>
+          </span>
           <div className="flex flex-row space-x-2">
             <input
               className="w-full h-12 px-5 border border-gray-300 rounded-lg"
@@ -57,7 +69,10 @@ Chart.register(ArcElement, Filler, Legend, Tooltip);
         </section>
 
         <section className="col-span-2 p-10 space-y-5 bg-white shadow-lg h-fit rounded-xl">
-          <h1 className="text-3xl font-bold">Recent Transactions</h1>
+          <span className="flex flex-row items-center space-x-2">
+            <Receipt className="text-3xl" weight="bold" />
+            <h1 className="text-3xl font-bold">Recent Transactions</h1>
+          </span>
           <div className="divide-y-2 divide-gray-200">
             {recentTransactions.map((transaction) => (
               <div
@@ -87,6 +102,7 @@ Chart.register(ArcElement, Filler, Legend, Tooltip);
 export async function getStaticProps(context) {
   const apiURL = process.env.API_URL;
   let recentTransactions = [];
+  let totalAssetBalance = [];
 
   await fetch(apiURL + "/getTransactions", {
     method: "POST",
