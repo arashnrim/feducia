@@ -1,6 +1,6 @@
 const express = require("express")
 const app = express()
-const port = 5000
+require("dotenv").config()
 const { calcDRMBPrice, calcDSGDPrice } = require("./priceRetrieval")
 const { getBalance } = require("./getBalance")
 
@@ -23,6 +23,8 @@ app.get("/getBalance", async(req, res) => {
     res.setHeader("Content-Type", "application/json")
     res.end(JSON.stringify({ balance: balance }))
 })
+
+const port = process.env.PORT || 5000
 
 app.listen(port, () => {
     console.debug(`Express is running on port ${port}.`)
