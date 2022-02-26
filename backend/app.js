@@ -23,16 +23,32 @@ app.get("/retrievePrice/dsgd", async (req, res) => {
   res.end(JSON.stringify({ dsgdPrice: DSGDPrice }));
 });
 
-app.get("/getBalance/drmb", async (req, res) => {
-  let balance = await getDRMBBalance();
+app.post("/getBalance/drmb", async (req, res) => {
+  const userAddress = req.body.userAddress;
   res.setHeader("Content-Type", "application/json");
-  res.end(JSON.stringify({ balance: balance }));
+  if (userAddress === undefined) {
+    res.sendStatus(400).end();
+  }
+  try {
+    let balance = await getDRMBBalance(userAddress);
+    res.end(JSON.stringify({ balance: balance }));
+  } catch {
+    res.sendStatus(400).end();
+  }
 });
 
-app.get("/getBalance/dsgd", async (req, res) => {
-  let balance = await getDSGDBalance();
+app.post("/getBalance/dsgd", async (req, res) => {
+  const userAddress = req.body.userAddress;
   res.setHeader("Content-Type", "application/json");
-  res.end(JSON.stringify({ balance: balance }));
+  if (userAddress === undefined) {
+    res.sendStatus(400).end();
+  }
+  try {
+    let balance = await getDSGDBalance(userAddress);
+    res.end(JSON.stringify({ balance: balance }));
+  } catch {
+    res.sendStatus(400).end();
+  }
 });
 
 app.post("/getTransactions", async (req, res) => {
