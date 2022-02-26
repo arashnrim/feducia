@@ -2,7 +2,7 @@ const https = require("https");
 const { retrieveAmountFromInputData } = require("./translateInputData");
 const { checkCurrency } = require("./currencies");
 
-function getTransactions(userAddress) {
+async function getTransactions(userAddress) {
   let url = `https://testnet.bscscan.com/api?module=account&action=tokentx&address=${userAddress}&startblock=0&endblock=99999999&offset=10&sort=asc`;
   let data = [];
   https
