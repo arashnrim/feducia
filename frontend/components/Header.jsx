@@ -14,22 +14,19 @@ const Header = () => {
   ];
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 flex flex-row h-24 shadow-md rounded-b-xl">
-      <nav className="flex items-center ml-auto mr-10">
-        <ul className="flex flex-row space-x-5 text-2xl font-bold">
-          {pages.map((page) => (
-            <Link
-              href={page.key}
-              key={page.key}
-              className={
-                "cursor-pointer " +
-                (path === page.key ? "text-blue-500" : "hover:text-gray-600")
-              }
-            >
-              {page.text}
-            </Link>
-          ))}
-        </ul>
+    <header className="fixed top-0 left-0 right-0 z-50 flex flex-row h-24 bg-white shadow-md backdrop-blur-md rounded-b-xl">
+      <nav className="flex flex-row items-center ml-auto mr-10 space-x-5 text-2xl font-bold">
+        {pages.map((page) => (
+          <Link
+            href={page.key}
+            key={page.key}
+            className={`cursor-pointer ${
+              page.key === path ? "text-blue-500" : "hover:text-gray-500"
+            }`}
+          >
+            {page.text}
+          </Link>
+        ))}
       </nav>
     </header>
   );
