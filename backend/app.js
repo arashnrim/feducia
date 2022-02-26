@@ -41,6 +41,7 @@ app.post("/getTransactions", async (req, res) => {
     res.sendStatus(400).end();
   }
   let transactionData = await getTransactions(userAddress);
+  console.debug(transactionData);
   res.setHeader("Content-Type", "application/json");
   res.end(JSON.stringify({ transactions: transactionData }));
 });
