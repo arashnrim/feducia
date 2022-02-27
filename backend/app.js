@@ -1,11 +1,13 @@
 const express = require("express");
 const app = express();
+const cors = require("cors");
 require("dotenv").config();
 const { calcDRMBPrice, calcDSGDPrice } = require("./priceRetrieval");
 const { getDRMBBalance, getDSGDBalance } = require("./getBalance");
 const { getTransactions } = require("./getTransactions");
 
 app.use(express.json());
+app.use(cors());
 
 app.get("/", (req, res) => {
   res.sendStatus(200);
