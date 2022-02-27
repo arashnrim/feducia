@@ -13,6 +13,52 @@ import Layout from "../components/Layout";
 
 Chart.register(ArcElement, Filler, Legend, Tooltip);
 
+const Home = ({ recentTransactions, totalAssetBalance }) => {
+  const [toField, setToField] = useState("");
+  const [valueField, setValueField] = useState("");
+  const [currencyOption, setCurrencyOption] = useState("");
+  const Web3 = require("web3");
+  const web3 = new Web3("https://data-seed-prebsc-1-s1.binance.org:8545/");
+  const sendTransaction = () => {
+    let destination = document.querySelector("#sendField").value;
+    let amountToSend = document.querySelector("#amountField").value;
+    let currencySelected = document.querySelector("#currencyField").value;
+    if (currencySelected == "USD") {
+      var tokenAddress = "0x78867BbEeF44f2326bF8DDd1941a4439382EF2A7";
+    }
+    if (currencySelected == "SGD") {
+      var tokenAddress = "0x25d1d454084Df3B23B0C982bc2E4CC2Dd06a7F12";
+    }
+    if (currencySelected == "RMB") {
+      var tokenAddress = "0x54ec93A799ea75c2ED8685d6310f5bF0c37c1bE4";
+    }
+    console.log(destination);
+    console.log(amountToSend);
+    console.log(tokenAddress);
+    console.log(currencySelected);
+    var uintToSend = parseFloat(amountToSend) * 1000000000000000000;
+    let data = web3.eth.abi.encodeParameters(
+      ["address", "uint256"],
+      [`${destination}`, `${uintToSend}`]
+    );
+
+    const transactionParameters = {
+      to: tokenAddress, // Required except during contract publications.
+      from: ethereum.selectedAddress, // must match user's active address.
+      value: "0x00", // Only required to send ether to the recipient from the initiating external account.
+      data: "0xa9059cbb" + data.slice(data.length + "0xa9059cbb".length - 138), // Optional, but used for defining smart contract creation and interaction.
+      chainId: "0x3", // Used to prevent transaction reuse across blockchains. Auto-filled by MetaMask.
+    };
+
+    ethereum
+      .request({
+        method: "eth_sendTransaction",
+        params: [transactionParameters],
+      })
+      .then((txHash) => console.log(txHash))
+      .catch((error) => console.error);
+  };
+
   const labels = [];
   const amounts = [];
   for (const currency of totalAssetBalance) {
@@ -50,20 +96,31 @@ Chart.register(ArcElement, Filler, Legend, Tooltip);
           </span>
           <div className="flex flex-row space-x-2">
             <input
+              id="amountField"
               className="w-full h-12 px-5 border border-gray-300 rounded-lg"
               placeholder="Send amount?"
+              onClick={(event) => setValueField(event.target.value)}
             ></input>
-            <select className="border border-gray-300 rounded-lg">
+            <select
+              className="border border-gray-300 rounded-lg"
+              id="currencyField"
+            >
               <option value="USD">USD</option>
               <option value="RMB">RMB</option>
               <option value="SGD">SGD</option>
+              onClick={(event) => setCurrencyOption(event.target.value)}
             </select>
           </div>
           <input
+            id="sendField"
             className="w-full h-12 px-5 border border-gray-300 rounded-lg"
             placeholder="Send to?"
+            onClick={(event) => setToField(event.target.value)}
           ></input>
-          <button className="bg-[#216de2] h-12 w-full rounded-lg hover:bg-[#1850a5] text-white font-bold">
+          <button
+            className="bg-[#216de2] h-12 w-full rounded-lg hover:bg-[#1850a5] text-white font-bold"
+            onClick={() => sendTransaction()}
+          >
             Confirm
           </button>
         </section>
@@ -99,7 +156,7 @@ Chart.register(ArcElement, Filler, Legend, Tooltip);
   );
 };
 
-export async function getStaticProps(context) {
+export async function getStaticProps() {
   const apiURL = process.env.API_URL;
   let recentTransactions = [];
   let totalAssetBalance = [];
@@ -109,7 +166,6 @@ export async function getStaticProps(context) {
     headers: {
       "Content-Type": "application/json",
     },
-    // TODO: Add custom user address
     body: JSON.stringify({
       userAddress: "0xd3999C07e2c09BDecC7c245E68cDF5a726c88863",
     }),
@@ -119,12 +175,11 @@ export async function getStaticProps(context) {
       recentTransactions = recentTransactions.concat(data.transactions);
     });
 
-  await fetch(apiURL + "/getBalance/drmb", {
+  await fetch(apiURL + `/getBalance/drmb`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    // TODO: Add custom user address
     body: JSON.stringify({
       userAddress: "0xd3999C07e2c09BDecC7c245E68cDF5a726c88863",
     }),
