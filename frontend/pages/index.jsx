@@ -1,5 +1,7 @@
 import { useRouter } from "next/router";
 import { useState } from "react";
+import Image from "next/image";
+import logo from "../public/logo.svg";
 
 const Home = () => {
   const router = useRouter();
@@ -27,10 +29,13 @@ const Home = () => {
 
   return (
     <main className="flex w-screen h-screen">
-      <section className="w-[70vw] bg-[#216de2] rounded-r-xl">
-        <h1 className="text-5xl text-white ">Logo here</h1>
+      <header className="fixed top-0 left-0 right-0 z-50 flex items-center px-10 bg-white">
+        <Image src={logo} height={64} width={190} alt="Logo" />
+      </header>
+
+      <section className="w-[70vw] bg-[#216de2] rounded-r-xl pt-40">
         <div className="flex items-center justify-center">
-          <h1 className="text-5xl font-bold text-white">Welcome to xxx!</h1>
+          <h1 className="text-5xl font-bold text-white">Welcome to feducia!</h1>
         </div>
       </section>
       <section className="w-[30vw] bg-gray-100 flex justify-center items-center">

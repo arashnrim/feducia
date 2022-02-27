@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { House, Wallet, Money, Question, Gear } from "phosphor-react";
+import { House, Wallet, Question, Gear } from "phosphor-react";
 
 const Header = () => {
   const router = useRouter();
@@ -9,7 +9,6 @@ const Header = () => {
   const pages = [
     { key: "home", text: "Home", icon: <House weight="bold" /> },
     { key: "wallet", text: "Wallet", icon: <Wallet weight="bold" /> },
-    { key: "loans", text: "Loans", icon: <Money weight="bold" /> },
     { key: "help", text: "Help", icon: <Question weight="bold" /> },
     { key: "preferences", text: "Preferences", icon: <Gear weight="bold" /> },
   ];

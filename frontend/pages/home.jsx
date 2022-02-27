@@ -32,10 +32,6 @@ const Home = ({ recentTransactions, totalAssetBalance }) => {
     if (currencySelected == "RMB") {
       var tokenAddress = "0x54ec93A799ea75c2ED8685d6310f5bF0c37c1bE4";
     }
-    console.log(destination);
-    console.log(amountToSend);
-    console.log(tokenAddress);
-    console.log(currencySelected);
     var uintToSend = parseFloat(amountToSend) * 1000000000000000000;
     let data = web3.eth.abi.encodeParameters(
       ["address", "uint256"],
